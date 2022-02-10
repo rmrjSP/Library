@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+    h3= book.title
+
+    div
+        p Publisher: #{book.publisher}
+        p Authors: #{book.authors}
+        p Genre: #{book.genre}
+        p Cover: #{book.cover}
+        p Page Count: #{book.pageCount}
+        p= book.description

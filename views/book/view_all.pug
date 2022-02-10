@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+    h3 Books
+    table
+        thread
+            tr
+                th Title
+                th Publisher
+                th Authors
+                th Genre
+                th Cover
+                th Page Count
+                th Description
+                th
+        tbody
+            each book in books
+                tr
+                    td= book.title
+                    td= book.publisher
+                    td= book.authors
+                    td= book.genre
+                    td= book.cover
+                    td= book.pageCount
+                    td= book.description
+                    td
+                        a(href=`/books/profile/${book.id}`) View Course

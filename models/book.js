@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     authors: DataTypes.STRING,
     genre: DataTypes.STRING,
     cover: DataTypes.STRING,
-    pageCount: DataTypes.INTEGER,
+    pageCount: DataTypes.STRING,
     description: DataTypes.STRING
   }, {
     sequelize,
