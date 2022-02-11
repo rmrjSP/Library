@@ -11,3 +11,36 @@ block content
         p Cover: #{book.cover}
         p Page Count: #{book.pageCount}
         p= book.description
+    div.authors
+        h4 Available Authors
+        if availableAuthors.length > 0
+            form(action=`/books/${book.id}/enroll/` method='post')
+                select(name='author' id='author' autocomplete=off)
+                    each author in availableAuthors
+                        option(value=author.id) #{author.first_name}
+                button.button.primary(type='submit') Add
+        else
+            p No remaining Author available
+
+        h4 Added Authprs
+        if book.authors.length > 0
+            table
+                thead
+                    tr
+                        th First
+                        th Last
+                        th Books
+                        th DOB
+                        th
+                tbody
+                    each authors in book.authors
+                        tr
+                            td= author.first_name
+                            td= author.last_name
+                            td= author.books
+                            td= author.dob
+                            td
+                                a(href=`/authors/profile/${author.id}`) View Author
+                                a(href=`/books/${book.id}/removeAuthor/${student.id}`) Remove Author
+        else
+            p No authors

@@ -1,4 +1,4 @@
-const {Book} = require('../models');
+const {Book, Author, AuthorsBooks} = require('../models');
 
 //view all
 module.exports.viewAll = async function(req, res){
@@ -7,8 +7,17 @@ module.exports.viewAll = async function(req, res){
 }
 //profile
 module.exports.viewProfile= async function(req,res){
-    const book = await Book.findByPk(req.params.id);
-    res.render('course/profile', {book})
+    const book = await Book.findByPk(req.params.id, {
+        include: 'authors'
+    });
+    const authors = await Author.findAll();
+    let availableAuthors = [];
+    for (let i=0; i<authors.length; i++) {
+        if (!bookHasAuthor(book, authors[i])) {
+            availableAuthors.push(authors[i]);
+        }
+    }
+    res.render('course/profile', {book,availableAuthors})
 }
 //render add
 module.exports.renderAddForm = function (req,res){
@@ -31,6 +40,7 @@ module.exports.addBook = async function(req,res) {
         authors: req.body.authors,
         genre: req.body.genre,
         cover: req.body.cover,
+        pageCount: req.body.pageCount,
         description: req.body.description,
     });
     res.redirect(`/books/profile/${book.id}`)
@@ -48,6 +58,7 @@ module.exports.updateBook = async function(req,res){
         authors: req.body.authors,
         genre: req.body.genre,
         cover: req.body.cover,
+        pageCount: req.body.pageCount,
         description: req.body.description,
     }, {
         where: {
@@ -64,4 +75,32 @@ module.exports.deleteBook = async function(req,res){
         }
     });
     res.redirect('/books');
+}
+
+function bookHasAuthor(book, author) {
+    for (let i=0; i<book.authors.length; i++){
+        if (author.id === book.authors[i].id){
+            return true
+        }
+    }
+    return false
+}
+
+module.exports.addAuthor = async function(req, res) {
+    await AuthorsBooks.create( {
+        author_id: req.body.author,
+        book_id: req.params.bookId
+
+    });
+    res.redirect(`/books/profile/${req.params.bookId}`)
+}
+
+module.exports.removeAuthor = async function(req, res) {
+    await AuthorsBooks.destroy({
+        where: {
+            book_id: req.params.bookId,
+            author_id: req.params.authorId
+        }
+    });
+    res.redirect(`/authors/profile/${req.params.bookId}`);
 }

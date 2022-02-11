@@ -1,0 +1,21 @@
+mixin authorForm(author, saveUrl, cancelUrl)
+
+    div.form-container
+        form(action=saveUrl method='post')
+            div.form-input
+                label(for='first_name') First Name
+                input(id='first_name' name='first_name' value= author.first_name)
+            div.form-input
+                label(for='last_name') Last Name
+                input(id='last_name' name='last_name' value= author.last_name)
+            div.form-input
+                label(for='books') Books
+                input(id='books' name='books' value= authors.books)
+            div.form-input
+                label(for='dob') Genre
+                input(id='dob' name='dob' value= author.dob)
+
+            div.form-buttons
+                a.button(href=cancelUrl) Cancel
+                button.button(type='submit') Save
+

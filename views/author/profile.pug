@@ -1,0 +1,51 @@
+extends ../layout
+
+block content
+    h3= author.first_name
+    a(href=`/authors/edit/${author.id}`) Edit Author
+    a(href=`/authors/delete/${author.id}`) Delete Author
+    div
+        p Last Name: #{author.last_name}
+        p Books: #{author.books}
+        p DOB: #{author.dob}
+
+    div.books
+        h4 Available Books
+        if availableBooks.length > 0
+            form(action=`/authors/${author.id}/enroll/` method='post')
+                select(name='book' id='book' autocomplete=off)
+                    each book in availableBooks
+                        option(value=book.id) #{book.title}
+                button.button.primary(type='submit') Add
+        else
+            p No remaining Books available
+
+        h4 Added Books
+        if author.books.length > 0
+            table
+                thread
+                    tr
+                        th Title
+                        th Publisher
+                        th Authors
+                        th Genre
+                        th Cover
+                        th Page Count
+                        th Description
+                        th
+                tbody
+                    each book in books
+                        tr
+                            td= book.title
+                            td= book.publisher
+                            td= book.authors
+                            td= book.genre
+                            td= book.cover
+                            td= book.pageCount
+                            td= book.description
+                            td
+
+                                a(href=`/books/profile/${book.id}`) View Book
+                                a(href=`/authors/${author.id}/removeBook/${author.id}`) Remove Books
+        else
+            p No Books

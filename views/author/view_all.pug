@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+    h3  Authors
+        if book.authors.length > 0
+            table
+                thead
+                    tr
+                        th First
+                        th Last
+                        th Books
+                        th DOB
+                        th
+                tbody
+                    each authors in book.authors
+                        tr
+                            td= author.first_name
+                            td= author.last_name
+                            td= author.books
+                            td= author.dob
+                            td
+                                a(href=`/authors/profile/${author.id}`) View Author
